@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "CapturarExcecao", urlPatterns = { "/pages/capturarExcecao" })
-public class CapturarExcacao extends HttpServlet {
+public class CapturarExcecao extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public CapturarExcacao() {
+	public CapturarExcecao() {
         super();
     
 	}

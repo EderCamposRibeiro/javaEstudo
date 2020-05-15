@@ -9,6 +9,7 @@
 <body>	
 	<h1>Autenticar usuário</h1>
 	<form action="ServletAutenticacao" method="post">
+		<input type="hidden" id="url" name="url" value="<%= request.getParameter("url") %>">
 		<table>
 			<tr>
 				<td>Login:</td>			
