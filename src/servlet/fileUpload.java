@@ -7,35 +7,34 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class fileUpload
- */
-@WebServlet("/fileUpload")
-public class fileUpload extends HttpServlet {
+@WebServlet("/pages/fileUpload")
+public class FileUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public fileUpload() {
+    public FileUpload() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		try {
+			// Usar variavel fileUpload para salvar no banco de dados
+			String fileUpload = request.getParameter("fileUpload");
+			
+			//neste momento faz o insert no banco de dados
+			response.getWriter().write("UPLOAD realizado com sucesso");
+		} catch (Exception e) {
+			response.getWriter().write("Erro fatal ao realizar upload");
+			e.printStackTrace();
+		}
+
+		
+		
+		
 	}
 
 }
