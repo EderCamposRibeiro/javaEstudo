@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,6 +14,24 @@
 	<input type="file" id="file" name="file" onchange="uploadFile();" />
 	<img alt="Imagem" id="target" width="200" height="200">
 	</form>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<!-- Colocando o fileUpload no link a servlet já identifica que é um Get -->
+	<a href="fileUpload">Carregar imagens</a>
+	<br/>
+	<br/>
+	<table>
+	<c:forEach items="${listaUserImagem}" var="user">
+		<tr>
+			<td>${user.id}</td>
+			<td>${user.login}</td>
+		</tr>
+	</c:forEach>	
+	</table>
+	<br/>
+	<br/>
 </body>
 <script type="text/javascript">
 	function uploadFile() {

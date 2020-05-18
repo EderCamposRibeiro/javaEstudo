@@ -80,6 +80,25 @@ public class DaoUsuario {
 		return listar;	
 	}
 	
+
+	public List<BeanUsuario> getUsuarios() throws Exception {
+		List<BeanUsuario> listar = new ArrayList<BeanUsuario>();
+		
+		String sql = "select * from usuario";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next()) {
+				BeanUsuario beanUsuario = new BeanUsuario();
+				beanUsuario.setId(resultSet.getLong("id"));
+				beanUsuario.setLogin(resultSet.getString("login"));
+				beanUsuario.setSenha(resultSet.getString("senha"));
+				beanUsuario.setNome(resultSet.getString("nome"));
+				beanUsuario.setImagem(resultSet.getString("imagem"));
+				listar.add(beanUsuario);
+			}
+		return listar;	
+	}	
+	
 	/*
 	 * Método delete()
 	 * Responsável Por Fazer a Exclusão (Delete) no BD
