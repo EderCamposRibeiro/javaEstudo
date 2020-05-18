@@ -1,6 +1,8 @@
 package filter;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,6 +19,8 @@ import user.UserLogado;
 
 @WebFilter(urlPatterns={"/pages/*"})
 public class FilterAutenticacao  implements Filter{
+	
+	private static Connection connection;
 	
 	// Faz alguma coisa quando a aplicação é derrubada
 	@Override
@@ -44,7 +48,17 @@ public class FilterAutenticacao  implements Filter{
 		}
 		
 		//executa as ações do request e response
-		chain.doFilter(request, response);
+//		try {
+			chain.doFilter(request, response);
+//			connection.commit();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			try {
+//				connection.rollback();
+//			} catch (SQLException e1) {
+//				e1.printStackTrace();
+//			}
+//		}
 		
 	}
 	

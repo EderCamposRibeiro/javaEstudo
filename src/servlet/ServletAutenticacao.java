@@ -10,11 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.DaoLogin;
 import user.UserLogado;
 
 @WebServlet("/pages/ServletAutenticacao")
 public class ServletAutenticacao extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private DaoLogin daoLogin = new DaoLogin();
        
     public ServletAutenticacao() {
         super();
@@ -33,32 +36,39 @@ public class ServletAutenticacao extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String login = request.getParameter("login");
-		String senha = request.getParameter("senha");
-		String url   = request.getParameter("url");
-		
-		// neste momento pode ser feita uma validação no banco de dados
-		if (login.equalsIgnoreCase("admin") 
-				&& senha.equalsIgnoreCase("123")) {
-			//se o login foi bem sucedido
+		try {
+			String login = request.getParameter("login");
+			String senha = request.getParameter("senha");
+			String url   = request.getParameter("url");
 			
-			UserLogado userLogado = new UserLogado();
-			userLogado.setLogin(login);
-			userLogado.setSenha(senha);
-			
-			// adiciona usuário logado na sessão
-			HttpServletRequest req = (HttpServletRequest) request;
-			HttpSession session = req.getSession();
-			session.setAttribute("usuario", userLogado);
-			
-			// redireciona para o sistema e autoriza
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-			dispatcher.forward(request, response);
-		} else {
-			// redireciona para login novamente
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/autenticar.jsp");
-			dispatcher.forward(request, response);
+			if (login != null && !login.isEmpty()
+					&& senha != null && !senha.isEmpty()) {
+				if (daoLogin.validarLogin(login, senha)) {
+					
+					UserLogado userLogado = new UserLogado();
+					userLogado.setLogin(login);
+					userLogado.setSenha(senha);
+					
+					// adiciona usuário logado na sessão
+					HttpServletRequest req = (HttpServletRequest) request;
+					HttpSession session = req.getSession();
+					session.setAttribute("usuario", userLogado);
+					
+					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+					dispatcher.forward(request, response);
+				} else {
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/autenticar.jsp");
+					dispatcher.forward(request, response);
+				}
+			} else {
+				RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+				dispatcher.forward(request, response);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
+
 	
 	}
 

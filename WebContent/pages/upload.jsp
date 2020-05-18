@@ -1,52 +1,53 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Upload Files</title>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Upload files</title>
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 </head>
 <body>
-	<form enctype="application/x-www-form-urlencoded">
-		<input type="file" id="file" name="file" onchange="uploadFile();">
-		<img alt="Imagem" src="" id="target" width="200" height="200">
+   <form enctype="application/x-www-form-urlencoded">
+	<input type="file" id="file" name="file" onchange="uploadFile();" />
+	<img alt="Imagem" id="target" width="200" height="200">
 	</form>
 </body>
-
 <script type="text/javascript">
-    function uploadFile() {
-		
-		var target = document.querySelector("img");
-		var file = document.querySelector('input[type=file]').files[0];
-	
-		var reader = new FileReader();
-	
-		reader.onloadend = function () {
-			target.src = reader.result;
+	function uploadFile() {
 
-			//-----Upload Ajax-----
+		var target = document.querySelector('img');
+		var file = document.querySelector('input[type=file]').files[0];
+
+		var reader = new FileReader();
+
+		reader.onloadend = function() {
+			target.src = reader.result;
 			
+			/////-----Upload ajax------
+
 			$.ajax({
-				method: "POST",
-				url: "fileUpload",  //Para qual servlet?
-				data: { fileUpload : reader.result}
-			})
-				.done(function (response) {// resposta ok - nenhum erro
-					alert("Suceso " + response);
-			})
-				.fail(function(xhr, status, errorThrown) {// resposta erro -  algum problema ocorreu
-					alert("Error: " + xhr.responseText); // Mostra resposta do servidor
+				method : "POST",
+				url : "fileUpload",
+				data : { fileUpload : reader.result }
+			}).done(function(response) {
+				alert("Sucesso: " + response);
+				
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Error: " + xhr.responseText);
 			});
-			reader.readAsDataURL(file);
-				//-----Fim Upload Ajax-----
+			
+
+			/////-----------
 		};
-	
+
 		if (file) {
-			reader.readAsDataURL(file);
-		}else {
-			target.src="";
+			reader.readAsDataURL(file); 
+		} else {
+			target.src = "";
 		}
-    }
+
+	}
 </script>
 </html>
