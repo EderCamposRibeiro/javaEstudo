@@ -1,6 +1,9 @@
 package servlet;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import dao.DaoUsuario;
 
@@ -24,9 +29,44 @@ public class FileUpload extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-			RequestDispatcher viDispatcher = request.getRequestDispatcher("upload.jsp");
-			request.setAttribute("listaUserImagem", daoUsuario.getUsuarios());
-			viDispatcher.forward(request, response);
+			
+			String acao = request.getParameter("acao");
+			
+			if (acao.equalsIgnoreCase("carregar")) {
+				RequestDispatcher viDispatcher = request.getRequestDispatcher("upload.jsp");
+				request.setAttribute("listaUserImagem", daoUsuario.getUsuarios());
+				viDispatcher.forward(request, response);
+			} else if(acao.equalsIgnoreCase("download")) {
+				String iduser = request.getParameter("iduser");
+				String imagem = daoUsuario.buscaImagem(iduser);
+				if (imagem != null) {
+					
+					response.setHeader("Content-Disposition", "attachment;filename=imagem.png");
+					
+					/*Pega somente imagem pura*/
+					String imagemPura = imagem.split(",")[1];
+					
+					/*Converte base 64 em bytes*/
+					byte [] imageBytes = new Base64().decodeBase64(imagemPura);
+					
+					/*Coloca os bytes em um objeto de entrada para processar*/
+					InputStream is = new ByteArrayInputStream(imageBytes);
+					
+					/*INICIO - Escrever dados na resposta*/
+					int read = 0;
+					byte[] bytes = new byte[1024];
+					OutputStream os = response.getOutputStream();
+					
+					while ((read = is.read(bytes)) != -1) {
+						os.write(bytes, 0, read);
+					}
+					
+					os.flush();
+					os.close();
+					
+					/*FIM    - Escrever dados na resposta*/
+				}
+			}
 		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

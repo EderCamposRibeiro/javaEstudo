@@ -209,5 +209,44 @@ public class DaoUsuario {
 			connection.commit();
 		
 	}
+	public String buscaImagem(String iduser) {
+		
+		try {
+			String sql = "SELECT imagem FROM usuario WHERE id = " + iduser;
+			PreparedStatement buscaImagem = connection.prepareStatement(sql);
+			ResultSet resultSet = buscaImagem.executeQuery();
+			while (resultSet.next()) {
+				return resultSet.getString("imagem");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

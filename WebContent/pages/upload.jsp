@@ -19,7 +19,7 @@
 	<br/>
 	<br/>
 	<!-- Colocando o fileUpload no link a servlet já identifica que é um Get -->
-	<a href="fileUpload">Carregar imagens</a>
+	<a href="fileUpload?acao=carregar">Carregar imagens</a>
 	<br/>
 	<br/>
 	<table>
@@ -27,6 +27,7 @@
 		<tr>
 			<td>${user.id}</td>
 			<td>${user.login}</td>
+			<td><a href="fileUpload?acao=download&iduser=${user.id}">Download Imagem</a></td>
 		</tr>
 	</c:forEach>	
 	</table>
