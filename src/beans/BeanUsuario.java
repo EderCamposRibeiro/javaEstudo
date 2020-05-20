@@ -7,6 +7,7 @@ public class BeanUsuario {
 	private String senha;
 	private String nome;
 	private String imagem;
+	private String tipofile;
 	
 	public Long getId() {
 		return id;
@@ -37,6 +38,12 @@ public class BeanUsuario {
 	}
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
+	}
+	public String getTipofile() {
+		return tipofile;
+	}
+	public void setTipoFile(String tipofile) {
+		this.tipofile = tipofile;
 	}
 	
 	

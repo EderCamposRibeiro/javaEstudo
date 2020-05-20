@@ -201,22 +201,32 @@ public class DaoUsuario {
 		}
 	}
 	public void gravarImagem(String imagem) throws SQLException {
+		
+		String tipoDados = imagem.split(",")[0].split(";")[0].split("/")[1];
 
-			String sql = "INSERT INTO usuario(imagem) VALUES(?);";
-			PreparedStatement insert = connection.prepareStatement(sql);
-			insert.setString(1, imagem);
-			insert.execute();
-			connection.commit();
+		String sql = "INSERT INTO usuario(imagem , tipofile) VALUES(? , ?);";
+		PreparedStatement insert = connection.prepareStatement(sql);
+		insert.setString(1, imagem);
+		insert.setString(2, tipoDados);
+		insert.execute();
+		connection.commit();
 		
 	}
-	public String buscaImagem(String iduser) {
+	public BeanUsuario buscaImagem(String iduser) {
 		
 		try {
-			String sql = "SELECT imagem FROM usuario WHERE id = " + iduser;
+			String sql = "SELECT * FROM usuario WHERE id = " + iduser;
 			PreparedStatement buscaImagem = connection.prepareStatement(sql);
 			ResultSet resultSet = buscaImagem.executeQuery();
 			while (resultSet.next()) {
-				return resultSet.getString("imagem");
+				BeanUsuario beanUsuario = new BeanUsuario();
+				beanUsuario.setId(resultSet.getLong("id"));
+				beanUsuario.setLogin(resultSet.getString("login"));
+				beanUsuario.setSenha(resultSet.getString("senha"));
+				beanUsuario.setNome(resultSet.getString("nome"));
+				beanUsuario.setImagem(resultSet.getString("imagem"));
+				beanUsuario.setTipoFile(resultSet.getString("tipofile"));
+				return beanUsuario;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
