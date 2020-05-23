@@ -3,6 +3,12 @@ package connections;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * Realizar conexão com o banco de dados
+ * @author ederc
+ *
+ */
+
 public class ConnectionDataBase {
 	
 	private static String banco = "jdbc:postgresql://localhost:5432/java-estudo?autoReconnect=true";
@@ -38,7 +44,7 @@ public class ConnectionDataBase {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("Erro ao Conectar com o Banco de Dados");
+			throw new RuntimeException("Erro ao Conectar com o Banco de Dados" + e.getMessage());
 		}
 	}
 	
