@@ -19,7 +19,7 @@ import beans.BeanUsuario;
 import dao.DaoUsuario;
 import service.RelatorioService;
 
-@WebServlet("/ServletDownloadFile")
+@WebServlet("/pages/ServletDownloadFile")
 public class ServletDownloadFile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -40,10 +40,8 @@ public class ServletDownloadFile extends HttpServlet {
 			String tipoExportar = request.getParameter("tipoExportar");
 			
 			List<BeanUsuario> usuarios = daoUsuario.getUsuarios();
-			List dados = new ArrayList<>();
-			dados.add(usuarios);
 			
-			String fileUrl = relatorioService.gerarRelatorio(dados, new HashMap(),
+			String fileUrl = relatorioService.gerarRelatorio(usuarios, new HashMap(),
 					"rel_usuario", "rel_usuario", context);
 			
 			/*Construir o caminho absoluto e completo do arquivo*/
