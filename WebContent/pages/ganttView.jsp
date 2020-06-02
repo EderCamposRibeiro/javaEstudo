@@ -33,20 +33,53 @@
 	
 	$.get("buscarDatasPlanejamento", function(response) {
 		
-		//var ganttDataResposta = JSON.parse(response);
+		// Processa dados gant view INICIO
+		var ganttDataResposta = JSON.parse(response);
 		
-		var ganttData = [ 
-				{
-					id: 1, name: "Projeto Java Web", series: [
-						{ name: "Planejado", start: new Date(2020,04,05), end: new Date(2020,04,20) },
-						{ name: "Real", start: new Date(2020,04,06), end: new Date(2020,04,17), color: "#f0f0f0" },
-						{ name: "Projetado", start: new Date(2020,04,06), end: new Date(2020,04,17), color: "#e0e0e0" }
-					]
+		var ganttData = "";
+		ganttData += "[";
+		
+		$.each(ganttDataResposta, function(index, projeto) { // For dos projetos
+			
+			ganttData += "{ \"id\": \""+projeto.id+"\", \"name\": \""+projeto.nome+"\", \"series\": [";
+			
+			$.each(projeto.series, function(idx, serie) { // For das series	
+				
+				var cores = "#3366FF,#00CC00".split(',');
+				
+				var cor;
+				
+				if (idx === 0) {
+					cor = '#CC33CC';
+				} else {
+					cor = Number.isInteger(idx / 2 ) ? cores[0] : cores[1]; 
 				}
-			]; 
+				
+				var datainicial = serie.datainicial.split('-');
+				var datafinal = serie.datafinal.split('-');
+				
+				ganttData +="{ \"name\": \""+serie.nome+"\", \"start\":\""+ new Date(datainicial[0],datainicial[1],datainicial[2])+"\", \"end\": \""+new Date(datafinal[0],datafinal[1],datafinal[2])+"\" , \"color\": \""+cor+"\", \"projeto\": \""+serie.projeto+"\" , \"serie\": \""+serie.id+"\" }";
+				
+				if (idx < projeto.series.length - 1) {
+					ganttData +=",";
+				}
+				
+			});// fim for da series
+			
+			ganttData +="]}";//fecha o array json de series
+			
+			if (index < ganttDataResposta.length - 1) {
+				ganttData +=",";
+			}
+		});// fim for dos projetos
 		
-
-			$("#ganttChart").ganttView({ 
+		ganttData += "]"; 
+		
+		ganttData = JSON.parse(ganttData);
+		
+		// processa dados gant view FIM
+			
+		 $("#ganttChart").ganttView({ 
 				data: ganttData,
 				slideWidth: 600,
 				behavior: {
@@ -55,13 +88,26 @@
 						$("#eventMessage").text(msg);
 					},
 					onResize: function (data) { 
-						var msg = "Evento de redimencionar: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+						
+						var start = data.start.toString("yyyy-M-d");
+						var end = 	data.end.toString("yyyy-M-d");
+						$.post("buscarDatasPlanejamento", { start: start, end : end, serie : data.serie, projeto : data.projeto });
+						
+						var msg = "Evento de errastar: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
 						$("#eventMessage").text(msg);
+						
 					},
 					onDrag: function (data) { 
-						var msg = "Evento de arrastar: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+						
+						var start = data.start.toString("yyyy-M-d");
+						var end = 	data.end.toString("yyyy-M-d");
+						$.post("buscarDatasPlanejamento", { start: start, end : end, serie : data.serie, projeto : data.projeto });
+						
+						var msg = "Evento de errastar: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
 						$("#eventMessage").text(msg);
+						
 					}
+					
 				}
 			});
 		});
