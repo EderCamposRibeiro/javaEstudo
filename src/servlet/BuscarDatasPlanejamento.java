@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import beans.Projeto;
+import beans.Series;
 import dao.DaoGanttChart;
 
 @WebServlet("/pages/buscarDatasPlanejamento")
@@ -45,7 +46,18 @@ public class BuscarDatasPlanejamento extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
- 
+		
+		try {
+			Series seriesUpdate = new Series();
+			seriesUpdate.setId(Long.parseLong(request.getParameter("serie")));
+			seriesUpdate.setProjeto(Long.parseLong(request.getParameter("projeto")));
+			seriesUpdate.setDatainicial(request.getParameter("start"));
+			seriesUpdate.setDatafinal(request.getParameter("end"));
+			
+			daoGanttChart.atualizar(seriesUpdate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -88,22 +88,19 @@
 						$("#eventMessage").text(msg);
 					},
 					onResize: function (data) { 
-						
 						var start = data.start.toString("yyyy-M-d");
-						var end = 	data.end.toString("yyyy-M-d");
-						$.post("buscarDatasPlanejamento", { start: start, end : end, serie : data.serie, projeto : data.projeto });
+						var end = data.end.toString("yyyy-M-d");
+						$.post( "buscarDatasPlanejamento", { start: start, end: end, serie: data.serie, projeto: data.projeto});
 						
-						var msg = "Evento de errastar: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+						var msg = "Evento de redimencionar: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
 						$("#eventMessage").text(msg);
-						
 					},
 					onDrag: function (data) { 
-						
 						var start = data.start.toString("yyyy-M-d");
-						var end = 	data.end.toString("yyyy-M-d");
-						$.post("buscarDatasPlanejamento", { start: start, end : end, serie : data.serie, projeto : data.projeto });
+						var end = data.end.toString("yyyy-M-d");
+						$.post( "buscarDatasPlanejamento", { start: start, end: end, serie: data.serie, projeto: data.projeto});
 						
-						var msg = "Evento de errastar: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+						var msg = "Evento de arrastar: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
 						$("#eventMessage").text(msg);
 						
 					}
